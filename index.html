@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бриф на логотип</title>
+  <!-- Telegram WebApp JS -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Плавные переходы для карточек */
+    .selectable-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .selected {
+      border-color: #6366f1 !important;
+      background-color: rgba(99, 102, 241, 0.1) !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 pb-24 font-sans">
+
+  <div class="max-w-md mx-auto space-y-6">
+    
+    <!-- Заголовок -->
+    <div class="text-center space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight text-white">Бриф на логотип</h1>
+      <p class="text-xs text-slate-400">Заполните ключевые детали за 2-3 минуты</p>
+    </div>
+
+    <!-- 1. О компании -->
+    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
+      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">1. О компании</h2>
+      
+      <div>
+        <label class="block text-xs text-slate-300 mb-1">Название бренда *</label>
+        <input type="text" id="brandName" placeholder="Например: Aurora Coffee" 
+               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs text-slate-300 mb-1">Сфера деятельности / Продукт *</label>
+        <input type="text" id="activity" placeholder="Кофейня, IT-стартап, одежда..." 
+               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+      </div>
+    </div>
+
+    <!-- 2. Тип логотипа -->
+    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
+      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">2. Желаемый формат</h2>
+      <p class="text-xs text-slate-400">Выберите подходящие варианты (можно несколько):</p>
+      
+      <div class="grid grid-cols-2 gap-2" id="logoTypes">
+        <div onclick="toggleSelect(this, 'Комбинированный (знак + текст)')" 
+             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
+          <div class="text-xl mb-1">🔤➕🔷</div>
+          <div class="text-xs font-medium">Знак + Текст</div>
+        </div>
+
+        <div onclick="toggleSelect(this, 'Только шрифтовой')" 
+             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
+          <div class="text-xl mb-1">✍️</div>
+          <div class="text-xs font-medium">Только шрифт</div>
+        </div>
+
+        <div onclick="toggleSelect(this, 'Эмблема / Герб')" 
+             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
+          <div class="text-xl mb-1">🛡️</div>
+          <div class="text-xs font-medium">Эмблема / Герб</div>
+        </div>
+
+        <div onclick="toggleSelect(this, 'Минималистичный абстрактный')" 
+             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
+          <div class="text-xl mb-1">🪐</div>
+          <div class="text-xs font-medium">Абстракция</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Цветовая палитра -->
+    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
+      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">3. Цвета и настроение</h2>
+      <p class="text-xs text-slate-400">Выберите готовую палитру:</p>
+
+      <div class="space-y-2" id="palettes">
+        <div onclick="selectRadio(this, 'Монохром (Черный / Белый / Графит)', 'palette')" 
+             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
+          <span class="text-xs">Монохром / Строгий</span>
+          <div class="flex space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-black border border-slate-600"></span>
+            <span class="w-5 h-5 rounded-full bg-slate-500"></span>
+            <span class="w-5 h-5 rounded-full bg-white"></span>
+          </div>
+        </div>
+
+        <div onclick="selectRadio(this, 'IT / Технологичный (Неон, Синий, Циан)', 'palette')" 
+             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
+          <span class="text-xs">Техно / IT</span>
+          <div class="flex space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-blue-600"></span>
+            <span class="w-5 h-5 rounded-full bg-cyan-400"></span>
+            <span class="w-5 h-5 rounded-full bg-indigo-900"></span>
+          </div>
+        </div>
+
+        <div onclick="selectRadio(this, 'Эко / Натуральный (Зеленый, Песочный, Олива)', 'palette')" 
+             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
+          <span class="text-xs">Эко / Натуральный</span>
+          <div class="flex space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-emerald-700"></span>
+            <span class="w-5 h-5 rounded-full bg-amber-200"></span>
+            <span class="w-5 h-5 rounded-full bg-stone-500"></span>
+          </div>
+        </div>
+
+        <div onclick="selectRadio(this, 'Премиум (Глубокий изумруд / Золото)', 'palette')" 
+             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
+          <span class="text-xs">Премиум / Люкс</span>
+          <div class="flex space-x-1.5">
+            <span class="w-5 h-5 rounded-full bg-emerald-950"></span>
+            <span class="w-5 h-5 rounded-full bg-amber-500"></span>
+            <span class="w-5 h-5 rounded-full bg-zinc-900"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Свой цвет -->
+      <div class="pt-2 flex items-center justify-between">
+        <label class="text-xs text-slate-300">Или выберите свой акцентный цвет:</label>
+        <input type="color" id="customColor" value="#6366f1" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0">
+      </div>
+    </div>
+
+    <!-- 4. Дополнительно и ссылки -->
+    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
+      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">4. Референсы и пожелания</h2>
+      
+      <div>
+        <label class="block text-xs text-slate-300 mb-1">Ссылки на примеры (Pinterest, сайты и т.д.)</label>
+        <textarea id="references" rows="2" placeholder="Вставьте ссылки на то, что нравится или не нравится" 
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs text-slate-300 mb-1">С кем связаться (Имя / телефон / ник) *</label>
+        <input type="text" id="contact" placeholder="Иван, @username или +7..." 
+               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+      </div>
+    </div>
+
+    <!-- Кнопка отправки -->
+    <button onclick="submitBrief()" 
+            class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 active:scale-[0.98] transition">
+      🚀 Отправить бриф дизайнеру
+    </button>
+
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    let selectedTypes = [];
+    let selectedPalette = 'Не выбрана';
+
+    // Мультиселект для типов логотипа
+    function toggleSelect(el, value) {
+      el.classList.toggle('selected');
+      if (selectedTypes.includes(value)) {
+        selectedTypes = selectedTypes.filter(item => item !== value);
+      } else {
+        selectedTypes.push(value);
+      }
+    }
+
+    // Одиночный выбор для палитры
+    function selectRadio(el, value, group) {
+      document.querySelectorAll('.palette-card').forEach(card => card.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPalette = value;
+    }
+
+    // Отправка данных обратно в бота
+    function submitBrief() {
+      const brand = document.getElementById('brandName').value.trim();
+      const activity = document.getElementById('activity').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const customColor = document.getElementById('customColor').value;
+      const references = document.getElementById('references').value.trim();
+
+      if (!brand || !activity || !contact) {
+        alert('Пожалуйста, заполните название бренда, сферу и ваши контакты.');
+        return;
+      }
+
+      const payload = {
+        brand: brand,
+        activity: activity,
+        types: selectedTypes.length ? selectedTypes : ['Не указано'],
+        palette: selectedPalette,
+        custom_color: customColor,
+        references: references || 'Нет ссылок',
+        contact: contact
+      };
+
+      if (tg && tg.sendData) {
+        // Отправка в Telegram
+        tg.sendData(JSON.stringify(payload));
+      } else {
+        // Для тестов в обычном браузере на ПК
+        alert('Данные брифа (в Telegram отправятся боту):\n' + JSON.stringify(payload, null, 2));
+      }
+    }
+  </script>
+</body>
+</html>
