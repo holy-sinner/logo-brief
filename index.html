@@ -3,157 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Бриф на логотип</title>
-  <!-- Telegram WebApp JS -->
+  <title>Бриф на разработку логотипа</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Плавные переходы для карточек */
-    .selectable-card {
-      transition: all 0.2s ease-in-out;
+    body {
+      background-color: #FAF7F2;
+      color: #2D241E;
     }
-    .selected {
-      border-color: #6366f1 !important;
-      background-color: rgba(99, 102, 241, 0.1) !important;
+    .custom-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .custom-card.selected {
+      border-color: #F97316 !important;
+      background-color: #FFF7ED !important;
+      box-shadow: 0 4px 12px -2px rgba(249, 115, 22, 0.2);
+    }
+    .chip {
+      transition: all 0.15s ease;
+    }
+    .chip.selected {
+      background-color: #EA580C !important;
+      color: #FFFFFF !important;
+      border-color: #EA580C !important;
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 pb-24 font-sans">
+<body class="min-h-screen p-4 pb-28 font-sans selection:bg-orange-200">
 
-  <div class="max-w-md mx-auto space-y-6">
+  <div class="max-w-md mx-auto space-y-5">
     
-    <!-- Заголовок -->
-    <div class="text-center space-y-1">
-      <h1 class="text-2xl font-bold tracking-tight text-white">Бриф на логотип</h1>
-      <p class="text-xs text-slate-400">Заполните ключевые детали за 2-3 минуты</p>
+    <!-- Шапка -->
+    <div class="text-center pt-2 pb-1 space-y-1">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-[11px] font-semibold tracking-wide uppercase">
+        <span>✨</span> Студия дизайна
+      </div>
+      <h1 class="text-2xl font-black tracking-tight text-stone-900">Бриф на логотип</h1>
+      <p class="text-xs text-stone-600">Комплексный бриф: помогите нам понять ДНК вашего бренда</p>
     </div>
 
-    <!-- 1. О компании -->
-    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
-      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">1. О компании</h2>
-      
+    <!-- ШАГ 1: Бренд и Стратегия -->
+    <div class="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-sm space-y-4">
+      <div class="flex items-center gap-2 border-b border-stone-100 pb-2.5">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">1</span>
+        <h2 class="text-xs font-bold text-stone-800 uppercase tracking-wider">Суть бренда и задачи</h2>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Название бренда *</label>
+          <input type="text" id="brandName" placeholder="Точно, как должно быть в знаке" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Что означает название / Слоган или дескриптор</label>
+          <input type="text" id="brandMeaning" placeholder="Смысл слова, аббревиатура или приписка (напр. 'кофейня')" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Сфера деятельности *</label>
+            <input type="text" id="activity" placeholder="IT, HoReCa, медицина..." 
+                   class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">География работы *</label>
+            <input type="text" id="region" placeholder="Город / Вся РФ / Мир" 
+                   class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1.5">Тип задачи:</label>
+          <div class="grid grid-cols-3 gap-1.5" id="taskTypes">
+            <button type="button" onclick="selectSingleChip(this, 'taskType')" data-val="С нуля" class="chip py-2 px-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">С нуля</button>
+            <button type="button" onclick="selectSingleChip(this, 'taskType')" data-val="Редизайн" class="chip py-2 px-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Редизайн</button>
+            <button type="button" onclick="selectSingleChip(this, 'taskType')" data-val="По наброску" class="chip py-2 px-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">По наброску</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1.5">Причина разработки сейчас:</label>
+          <div class="grid grid-cols-2 gap-1.5" id="whyNow">
+            <button type="button" onclick="selectSingleChip(this, 'whyNow')" data-val="Старт нового бизнеса" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Старт нового дела</button>
+            <button type="button" onclick="selectSingleChip(this, 'whyNow')" data-val="Выход на новые рынки" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Выход на новый рынок</button>
+            <button type="button" onclick="selectSingleChip(this, 'whyNow')" data-val="Устарел текущий стиль" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Устарел старый стиль</button>
+            <button type="button" onclick="selectSingleChip(this, 'whyNow')" data-val="Смена концепции / ЦА" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Смена концепции</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 2: Аудитория, УТП и Позиционирование -->
+    <div class="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-sm space-y-4">
+      <div class="flex items-center gap-2 border-b border-stone-100 pb-2.5">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">2</span>
+        <h2 class="text-xs font-bold text-stone-800 uppercase tracking-wider">Маркетинг и окружение</h2>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Главное УТП и отличие от конкурентов</label>
+          <textarea id="usp" rows="2" placeholder="В чем ваша суперсила? Чем привлекаете клиентов?" 
+                    class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Целевая аудитория (кто покупает?)</label>
+          <input type="text" id="targetAudience" placeholder="Возраст, статус, ценности, достаток" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Конкуренты</label>
+            <input type="text" id="competitors" placeholder="Имена или ссылки" 
+                   class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Товарный знак</label>
+            <div class="flex gap-1" id="trademarkBlock">
+              <button type="button" onclick="selectSingleChip(this, 'trademark')" data-val="Да, регистрируем" class="chip flex-1 py-2 text-[10px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Да, будем</button>
+              <button type="button" onclick="selectSingleChip(this, 'trademark')" data-val="Нет / Пока нет" class="chip flex-1 py-2 text-[10px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Нет</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1.5">Стратегия среди конкурентов:</label>
+          <div class="grid grid-cols-2 gap-2" id="strategyBlock">
+            <button type="button" onclick="selectSingleChip(this, 'strategy')" data-val="Ярко выделиться (смелые решения)" class="chip py-2 px-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 text-left selected">⚡️ Выделиться смело</button>
+            <button type="button" onclick="selectSingleChip(this, 'strategy')" data-val="Сойти за своего (надежная классика)" class="chip py-2 px-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 text-left">🤝 Классика рынка</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 3: Анатомия и стиль логотипа (С ВИЗУАЛОМ) -->
+    <div class="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-sm space-y-4">
+      <div class="flex items-center gap-2 border-b border-stone-100 pb-2.5">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">3</span>
+        <h2 class="text-xs font-bold text-stone-800 uppercase tracking-wider">Форма и визуальный образ</h2>
+      </div>
+
+      <!-- Карточки формы логотипа с SVG миниатюрами -->
       <div>
-        <label class="block text-xs text-slate-300 mb-1">Название бренда *</label>
-        <input type="text" id="brandName" placeholder="Например: Aurora Coffee" 
-               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+        <label class="block text-xs font-medium text-stone-700 mb-2">Желаемая структура знака (мультивыбор):</label>
+        <div class="grid grid-cols-2 gap-2.5" id="logoStructures">
+          
+          <!-- Знак + Текст -->
+          <div onclick="toggleMultiCard(this, 'Комбинированный (знак + надпись)')" 
+               class="custom-card border border-stone-200 rounded-xl p-3 cursor-pointer bg-stone-50/60 hover:border-amber-400">
+            <div class="h-10 flex items-center justify-center mb-1.5 text-stone-700">
+              <svg class="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <rect x="3" y="5" width="6" height="6" rx="1.5" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-width="2" d="M12 7h9M12 11h6"/>
+              </svg>
+            </div>
+            <div class="text-xs font-bold text-stone-800 text-center">Знак + Текст</div>
+            <div class="text-[10px] text-stone-500 text-center leading-tight">Классический баланс</div>
+          </div>
+
+          <!-- Только шрифт -->
+          <div onclick="toggleMultiCard(this, 'Шрифтовой логотип')" 
+               class="custom-card border border-stone-200 rounded-xl p-3 cursor-pointer bg-stone-50/60 hover:border-amber-400">
+            <div class="h-10 flex items-center justify-center mb-1.5 text-stone-700">
+              <span class="text-base font-black tracking-widest text-amber-600 font-serif">BRAND</span>
+            </div>
+            <div class="text-xs font-bold text-stone-800 text-center">Шрифтовой</div>
+            <div class="text-[10px] text-stone-500 text-center leading-tight">Без лишней графики</div>
+          </div>
+
+          <!-- Эмблема / Герб -->
+          <div onclick="toggleMultiCard(this, 'Эмблема / Герб / Бейдж')" 
+               class="custom-card border border-stone-200 rounded-xl p-3 cursor-pointer bg-stone-50/60 hover:border-amber-400">
+            <div class="h-10 flex items-center justify-center mb-1.5">
+              <svg class="w-8 h-8 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div class="text-xs font-bold text-stone-800 text-center">Эмблема / Герб</div>
+            <div class="text-[10px] text-stone-500 text-center leading-tight">Традиции и статус</div>
+          </div>
+
+          <!-- Монограмма -->
+          <div onclick="toggleMultiCard(this, 'Знак-буква / Монограмма')" 
+               class="custom-card border border-stone-200 rounded-xl p-3 cursor-pointer bg-stone-50/60 hover:border-amber-400">
+            <div class="h-10 flex items-center justify-center mb-1.5">
+              <span class="w-8 h-8 rounded-lg bg-orange-100 text-orange-700 font-black text-sm flex items-center justify-center border border-orange-300">
+                M
+              </span>
+            </div>
+            <div class="text-xs font-bold text-stone-800 text-center">Монограмма</div>
+            <div class="text-[10px] text-stone-500 text-center leading-tight">Заглавный символ</div>
+          </div>
+
+        </div>
       </div>
 
+      <!-- Детализация -->
       <div>
-        <label class="block text-xs text-slate-300 mb-1">Сфера деятельности / Продукт *</label>
-        <input type="text" id="activity" placeholder="Кофейня, IT-стартап, одежда..." 
-               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+        <label class="block text-xs font-medium text-stone-700 mb-1.5">Степень детализации:</label>
+        <div class="grid grid-cols-2 gap-2" id="detailLevelBlock">
+          <button type="button" onclick="selectSingleChip(this, 'detailLevel')" data-val="Минималистичный (простые формы)" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 text-left selected">
+            ▫️ Минималистичный
+          </button>
+          <button type="button" onclick="selectSingleChip(this, 'detailLevel')" data-val="Детализированный (сложная графика)" class="chip py-2 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 text-left">
+            ⚜️ Детализированный
+          </button>
+        </div>
+      </div>
+
+      <!-- Характер логотипа -->
+      <div>
+        <label class="block text-xs font-medium text-stone-700 mb-1.5">Характер логотипа (выберите до 3-х):</label>
+        <div class="flex flex-wrap gap-1.5" id="moodChips">
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Строгий/Деловой" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Строгий</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Премиум/Люкс" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Премиум</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Уютный/Теплый" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Уютный / Теплый</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Технологичный" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Технологичный</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Дерзкий/Динамичный" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Дерзкий</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Экологичный/Природный" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Эко / Натуральный</button>
+        </div>
+      </div>
+
+      <!-- Образы и ограничения -->
+      <div class="space-y-2 pt-1">
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Желаемые визуальные образы (если есть)</label>
+          <input type="text" id="visualMetaphors" placeholder="Например: лучи солнца, лист, чашка, геометрическая волна" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-rose-700 mb-1">⛔️ Строгие запреты (чего ТОЧНО НЕ использовать):</label>
+          <input type="text" id="restrictions" placeholder="Например: без корон, без завитушек, не использовать зеленый" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
       </div>
     </div>
 
-    <!-- 2. Тип логотипа -->
-    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
-      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">2. Желаемый формат</h2>
-      <p class="text-xs text-slate-400">Выберите подходящие варианты (можно несколько):</p>
-      
-      <div class="grid grid-cols-2 gap-2" id="logoTypes">
-        <div onclick="toggleSelect(this, 'Комбинированный (знак + текст)')" 
-             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
-          <div class="text-xl mb-1">🔤➕🔷</div>
-          <div class="text-xs font-medium">Знак + Текст</div>
-        </div>
-
-        <div onclick="toggleSelect(this, 'Только шрифтовой')" 
-             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
-          <div class="text-xl mb-1">✍️</div>
-          <div class="text-xs font-medium">Только шрифт</div>
-        </div>
-
-        <div onclick="toggleSelect(this, 'Эмблема / Герб')" 
-             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
-          <div class="text-xl mb-1">🛡️</div>
-          <div class="text-xs font-medium">Эмблема / Герб</div>
-        </div>
-
-        <div onclick="toggleSelect(this, 'Минималистичный абстрактный')" 
-             class="selectable-card border border-slate-700 rounded-xl p-3 text-center cursor-pointer hover:border-slate-500">
-          <div class="text-xl mb-1">🪐</div>
-          <div class="text-xs font-medium">Абстракция</div>
-        </div>
+    <!-- ШАГ 4: Цвета и Шрифты -->
+    <div class="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-sm space-y-4">
+      <div class="flex items-center gap-2 border-b border-stone-100 pb-2.5">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">4</span>
+        <h2 class="text-xs font-bold text-stone-800 uppercase tracking-wider">Цветовая палитра и шрифты</h2>
       </div>
-    </div>
-
-    <!-- 3. Цветовая палитра -->
-    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
-      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">3. Цвета и настроение</h2>
-      <p class="text-xs text-slate-400">Выберите готовую палитру:</p>
 
       <div class="space-y-2" id="palettes">
-        <div onclick="selectRadio(this, 'Монохром (Черный / Белый / Графит)', 'palette')" 
-             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
-          <span class="text-xs">Монохром / Строгий</span>
+        <!-- Солнечная / Теплая -->
+        <div onclick="selectSingleCard(this, 'Теплая терракота и мед (Охра / Оранж / Крем)', 'palette')" 
+             class="palette-card border border-stone-200 rounded-xl p-2.5 flex items-center justify-between cursor-pointer bg-stone-50/70 selected">
+          <div>
+            <div class="text-xs font-bold text-stone-800">Теплая / Уютная</div>
+            <div class="text-[10px] text-stone-500">Охра, терракота, песочный</div>
+          </div>
           <div class="flex space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-black border border-slate-600"></span>
-            <span class="w-5 h-5 rounded-full bg-slate-500"></span>
-            <span class="w-5 h-5 rounded-full bg-white"></span>
+            <span class="w-5 h-5 rounded-full bg-[#EA580C] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-[#F59E0B] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-[#FEF3C7] border border-stone-300"></span>
           </div>
         </div>
 
-        <div onclick="selectRadio(this, 'IT / Технологичный (Неон, Синий, Циан)', 'palette')" 
-             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
-          <span class="text-xs">Техно / IT</span>
+        <!-- Премиум монохром -->
+        <div onclick="selectSingleCard(this, 'Премиальный монохром (Графит / Золото / Белый)', 'palette')" 
+             class="palette-card border border-stone-200 rounded-xl p-2.5 flex items-center justify-between cursor-pointer bg-stone-50/70">
+          <div>
+            <div class="text-xs font-bold text-stone-800">Монохром + Золото</div>
+            <div class="text-[10px] text-stone-500">Глубокий черный, акцентное золото</div>
+          </div>
           <div class="flex space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-blue-600"></span>
-            <span class="w-5 h-5 rounded-full bg-cyan-400"></span>
-            <span class="w-5 h-5 rounded-full bg-indigo-900"></span>
+            <span class="w-5 h-5 rounded-full bg-[#18181B] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-[#D97706] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-white border border-stone-300"></span>
           </div>
         </div>
 
-        <div onclick="selectRadio(this, 'Эко / Натуральный (Зеленый, Песочный, Олива)', 'palette')" 
-             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
-          <span class="text-xs">Эко / Натуральный</span>
-          <div class="flex space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-emerald-700"></span>
-            <span class="w-5 h-5 rounded-full bg-amber-200"></span>
-            <span class="w-5 h-5 rounded-full bg-stone-500"></span>
+        <!-- Свежий эко -->
+        <div onclick="selectSingleCard(this, 'Эко-палитра (Хвоя / Шалфей / Теплый лен)', 'palette')" 
+             class="palette-card border border-stone-200 rounded-xl p-2.5 flex items-center justify-between cursor-pointer bg-stone-50/70">
+          <div>
+            <div class="text-xs font-bold text-stone-800">Природная свежесть</div>
+            <div class="text-[10px] text-stone-500">Олива, шалфей, натуральный лен</div>
           </div>
-        </div>
-
-        <div onclick="selectRadio(this, 'Премиум (Глубокий изумруд / Золото)', 'palette')" 
-             class="palette-card border border-slate-700 rounded-xl p-2.5 flex items-center justify-between cursor-pointer">
-          <span class="text-xs">Премиум / Люкс</span>
           <div class="flex space-x-1.5">
-            <span class="w-5 h-5 rounded-full bg-emerald-950"></span>
-            <span class="w-5 h-5 rounded-full bg-amber-500"></span>
-            <span class="w-5 h-5 rounded-full bg-zinc-900"></span>
+            <span class="w-5 h-5 rounded-full bg-[#15803D] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-[#86EFAC] shadow-sm"></span>
+            <span class="w-5 h-5 rounded-full bg-[#E7E5E4] border border-stone-300"></span>
           </div>
         </div>
       </div>
 
-      <!-- Свой цвет -->
-      <div class="pt-2 flex items-center justify-between">
-        <label class="text-xs text-slate-300">Или выберите свой акцентный цвет:</label>
-        <input type="color" id="customColor" value="#6366f1" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0">
+      <div class="pt-1 flex items-center justify-between bg-amber-50/70 p-3 rounded-xl border border-amber-200/60">
+        <div>
+          <div class="text-xs font-medium text-stone-800">Свой фирменный цвет</div>
+          <div class="text-[10px] text-stone-500">Если есть конкретный оттенок</div>
+        </div>
+        <input type="color" id="customColor" value="#F97316" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0">
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-stone-700 mb-1.5">Использование платных шрифтов:</label>
+        <div class="grid grid-cols-3 gap-1.5" id="fontsBlock">
+          <button type="button" onclick="selectSingleChip(this, 'fonts')" data-val="Только бесплатные (Google Fonts)" class="chip py-2 px-1 text-[10px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Бесплатные</button>
+          <button type="button" onclick="selectSingleChip(this, 'fonts')" data-val="Допускаются платные" class="chip py-2 px-1 text-[10px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Допускаются</button>
+          <button type="button" onclick="selectSingleChip(this, 'fonts')" data-val="Зависит от цены лицензии" class="chip py-2 px-1 text-[10px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Зависит от цены</button>
+        </div>
       </div>
     </div>
 
-    <!-- 4. Дополнительно и ссылки -->
-    <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60 space-y-3">
-      <h2 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">4. Референсы и пожелания</h2>
-      
-      <div>
-        <label class="block text-xs text-slate-300 mb-1">Ссылки на примеры (Pinterest, сайты и т.д.)</label>
-        <textarea id="references" rows="2" placeholder="Вставьте ссылки на то, что нравится или не нравится" 
-                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500"></textarea>
+    <!-- ШАГ 5: Носители, Референсы и Контакты -->
+    <div class="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-sm space-y-4">
+      <div class="flex items-center gap-2 border-b border-stone-100 pb-2.5">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">5</span>
+        <h2 class="text-xs font-bold text-stone-800 uppercase tracking-wider">Носители и контактные данные</h2>
       </div>
 
       <div>
-        <label class="block text-xs text-slate-300 mb-1">С кем связаться (Имя / телефон / ник) *</label>
-        <input type="text" id="contact" placeholder="Иван, @username или +7..." 
-               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+        <label class="block text-xs font-medium text-stone-700 mb-1.5">Где будет использоваться чаще всего:</label>
+        <div class="flex flex-wrap gap-1.5" id="placementsChips">
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Соцсети/Аватар" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Соцсети/Аватар</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Сайт/Приложение" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Сайт/Web</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Вывеска/Интерьер" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Вывеска</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Упаковка/Этикетка" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Упаковка</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Полиграфия/Визитки" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Полиграфия</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-stone-700 mb-1.5">Какие еще дизайн-услуги понадобятся:</label>
+        <div class="flex flex-wrap gap-1.5" id="extraServicesChips">
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Фирменный стиль целиком" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Фирстиль целиком</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Дизайн соцсетей" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Оформление соцсетей</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Дизайн визиток/бланков" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Визитки/бланки</button>
+          <button type="button" onclick="toggleMultiChip(this)" data-val="Дизайн сайта" class="chip py-1.5 px-2.5 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Сайт</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-stone-700 mb-1">Ссылки на референсы (что нравится / не нравится)</label>
+        <textarea id="references" rows="2" placeholder="Вставьте ссылки на Pinterest, сайты или примеры компаний" 
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 focus:bg-white transition"></textarea>
+      </div>
+
+      <div class="pt-2 border-t border-stone-100 space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Контактное лицо (Имя и телефон/ник) *</label>
+          <input type="text" id="contact" placeholder="Александр, +7 999 123-45-67 или @telegram" 
+                 class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-500 focus:bg-white transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Вы принимаете окончательное решение (ЛПР)?</label>
+          <div class="grid grid-cols-2 gap-2" id="decisionMakerBlock">
+            <button type="button" onclick="selectSingleChip(this, 'decisionMaker')" data-val="Да, решение принимаю я" class="chip py-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700 selected">Да, я лично</button>
+            <button type="button" onclick="selectSingleChip(this, 'decisionMaker')" data-val="Нет, решение принимает руководство/партнер" class="chip py-2 text-[11px] font-medium border border-stone-200 rounded-lg bg-stone-50 text-stone-700">Коллеги / Партнер</button>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Кнопка отправки -->
-    <button onclick="submitBrief()" 
-            class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 active:scale-[0.98] transition">
-      🚀 Отправить бриф дизайнеру
-    </button>
+    <div class="pt-2">
+      <button onclick="submitDetailedBrief()" 
+              class="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-orange-500/25 active:scale-[0.98] transition flex items-center justify-center gap-2">
+        <span>🚀</span>
+        <span>Отправить бриф дизайнеру</span>
+      </button>
+      <p class="text-center text-[11px] text-stone-500 mt-2">После отправки Кирилл свяжется с вами для оценки сроков</p>
+    </div>
 
   </div>
 
@@ -164,55 +383,96 @@
       tg.expand();
     }
 
-    let selectedTypes = [];
-    let selectedPalette = 'Не выбрана';
+    // Состояния данных
+    let selectedStructures = [];
+    let selectedPalette = 'Теплая терракота и мед (Охра / Оранж / Крем)';
 
-    // Мультиселект для типов логотипа
-    function toggleSelect(el, value) {
-      el.classList.toggle('selected');
-      if (selectedTypes.includes(value)) {
-        selectedTypes = selectedTypes.filter(item => item !== value);
-      } else {
-        selectedTypes.push(value);
-      }
+    // Одиночные переключатели (Radio chips)
+    function selectSingleChip(el, groupName) {
+      const parent = el.parentElement;
+      parent.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
     }
 
-    // Одиночный выбор для палитры
-    function selectRadio(el, value, group) {
-      document.querySelectorAll('.palette-card').forEach(card => card.classList.remove('selected'));
+    // Мультивыбор чипсов (Tags)
+    function toggleMultiChip(el) {
+      el.classList.toggle('selected');
+    }
+
+    // Одиночный выбор карточки (Палитра)
+    function selectSingleCard(el, value, group) {
+      document.querySelectorAll('.palette-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
       selectedPalette = value;
     }
 
-    // Отправка данных обратно в бота
-    function submitBrief() {
+    // Мультивыбор карточек форм логотипа
+    function toggleMultiCard(el, value) {
+      el.classList.toggle('selected');
+      if (selectedStructures.includes(value)) {
+        selectedStructures = selectedStructures.filter(item => item !== value);
+      } else {
+        selectedStructures.push(value);
+      }
+    }
+
+    function getSelectedValues(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return [];
+      const selected = container.querySelectorAll('.chip.selected');
+      return Array.from(selected).map(btn => btn.getAttribute('data-val') || btn.innerText.trim());
+    }
+
+    function getSingleValue(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return 'Не выбрано';
+      const selected = container.querySelector('.chip.selected');
+      return selected ? (selected.getAttribute('data-val') || selected.innerText.trim()) : 'Не выбрано';
+    }
+
+    // Сборка и отправка
+    function submitDetailedBrief() {
       const brand = document.getElementById('brandName').value.trim();
       const activity = document.getElementById('activity').value.trim();
+      const region = document.getElementById('region').value.trim();
       const contact = document.getElementById('contact').value.trim();
-      const customColor = document.getElementById('customColor').value;
-      const references = document.getElementById('references').value.trim();
 
       if (!brand || !activity || !contact) {
-        alert('Пожалуйста, заполните название бренда, сферу и ваши контакты.');
+        alert('Пожалуйста, заполните обязательные поля: Название бренда, Сферу и Контакты!');
         return;
       }
 
       const payload = {
         brand: brand,
+        meaning: document.getElementById('brandMeaning').value.trim() || 'Без слогана',
         activity: activity,
-        types: selectedTypes.length ? selectedTypes : ['Не указано'],
+        region: region || 'Не указан',
+        task_type: getSingleValue('taskTypes'),
+        why_now: getSingleValue('whyNow'),
+        usp: document.getElementById('usp').value.trim() || 'Не указано',
+        audience: document.getElementById('targetAudience').value.trim() || 'Не указана',
+        competitors: document.getElementById('competitors').value.trim() || 'Не указаны',
+        trademark: getSingleValue('trademarkBlock'),
+        strategy: getSingleValue('strategyBlock'),
+        structures: selectedStructures.length ? selectedStructures : ['На усмотрение дизайнера'],
+        detail_level: getSingleValue('detailLevelBlock'),
+        mood: getSelectedValues('moodChips'),
+        metaphors: document.getElementById('visualMetaphors').value.trim() || 'Без ограничений',
+        restrictions: document.getElementById('restrictions').value.trim() || 'Нет запретов',
         palette: selectedPalette,
-        custom_color: customColor,
-        references: references || 'Нет ссылок',
-        contact: contact
+        custom_color: document.getElementById('customColor').value,
+        fonts: getSingleValue('fontsBlock'),
+        placements: getSelectedValues('placementsChips'),
+        extra_services: getSelectedValues('extraServicesChips'),
+        references: document.getElementById('references').value.trim() || 'Нет ссылок',
+        contact: contact,
+        decision_maker: getSingleValue('decisionMakerBlock')
       };
 
       if (tg && tg.sendData) {
-        // Отправка в Telegram
         tg.sendData(JSON.stringify(payload));
       } else {
-        // Для тестов в обычном браузере на ПК
-        alert('Данные брифа (в Telegram отправятся боту):\n' + JSON.stringify(payload, null, 2));
+        alert('Данные брифа:\n' + JSON.stringify(payload, null, 2));
       }
     }
   </script>
